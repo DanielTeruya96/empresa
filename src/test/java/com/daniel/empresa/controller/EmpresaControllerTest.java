@@ -75,14 +75,6 @@ public class EmpresaControllerTest {
 
     }
 
-
-
-
-
-
-
-
-
     private List<EmpresaResponse> mockListaEmpresa() {
         List<EmpresaResponse> empresaResponseList = new ArrayList<>();
         empresaResponseList.add(new EmpresaResponse(1L, "BRQ", "00.000.000/0000-00"));
