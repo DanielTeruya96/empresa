@@ -26,17 +26,17 @@ public class EmpresaController {
     }
 
     @PostMapping
-    public ResponseEntity<EmpresaResponse> credenciarEmpresa(@RequestBody EmpresaRequest empresaRequest, @RequestHeader(value = "Authorization") String autorization) throws UnsupportedEncodingException {
+    public ResponseEntity<EmpresaResponse> credenciarEmpresa(@RequestBody EmpresaRequest empresaRequest, @RequestHeader(value = "Authorization") String autorization){
                return new ResponseEntity<>(empresaService.credenciar(empresaRequest,autorization), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<EmpresaResponse> alterarEmpresa(@RequestBody EmpresaRequest empresaRequest, @RequestHeader(value = "Authorization") String autorization) throws UnsupportedEncodingException {
+    public ResponseEntity<EmpresaResponse> alterarEmpresa(@RequestBody EmpresaRequest empresaRequest, @RequestHeader(value = "Authorization") String autorization){
         return new ResponseEntity<>(empresaService.alterar(empresaRequest,autorization), HttpStatus.OK);
     }
 
     @DeleteMapping()
-    public ResponseEntity<String> deletar(@RequestParam long id,@RequestHeader(value = "Authorization") String autorization) throws UnsupportedEncodingException {
+    public ResponseEntity<String> deletar(@RequestParam long id,@RequestHeader(value = "Authorization") String autorization) {
 
         return new ResponseEntity<>(empresaService.deletar(id,autorization), HttpStatus.OK);
     }
