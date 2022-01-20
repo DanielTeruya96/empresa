@@ -10,6 +10,7 @@ import com.daniel.empresa.repository.EmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -58,11 +59,11 @@ public class EmpresaService {
     }
 
     private String getUsuario(String autorization) {
-//        TODO implementar a decodificação
-//        byte[] i =  Base64.getDecoder().decode(autorization);
-//        String decodificado = new String(i);
-//        return decodificado.split(":")[0];
-        return autorization;
+        autorization = autorization.replace("Basic ","");
+        byte[] i =  Base64.getDecoder().decode(autorization);
+        String decodificado = new String(i);
+        return decodificado.split(":")[0];
+
 
 
     }
