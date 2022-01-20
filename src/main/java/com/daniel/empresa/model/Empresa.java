@@ -39,7 +39,7 @@ public class Empresa implements Serializable {
 
 
     @Column(name = "situacao")
-    private long situacao;
+    private long situacao = 1L;
 
 
     public Long getId() {

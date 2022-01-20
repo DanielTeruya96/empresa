@@ -5,15 +5,15 @@ import com.daniel.empresa.dto.EmpresaResponse;
 import com.daniel.empresa.exception.BasicException;
 import com.daniel.empresa.mapper.EmpresaMapper;
 import com.daniel.empresa.model.Empresa;
+import com.daniel.empresa.model.SituacaoEnum;
 import com.daniel.empresa.repository.EmpresaRepository;
-import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
-import javax.validation.Validation;
-import java.util.Base64;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmpresaService {
@@ -24,9 +24,10 @@ public class EmpresaService {
 
 
 
+
     public EmpresaResponse credenciar(EmpresaRequest empresaRequest, String autorization) {
         validarCampsObrigatorio(empresaRequest);
-        empresaRequest.setCnpj(empresaRequest.getCnpj().replace(".","").replace("/","").replace("-","") );
+        empresaRequest.setCnpj(empresaRequest.getCnpj().replaceAll("[./-]", "") );
         Empresa emp = new EmpresaMapper().toEmpresa(empresaRequest);
         validar(emp);
         emp.setUsuarioCriacao(getUsuario(autorization));
@@ -49,7 +50,7 @@ public class EmpresaService {
     }
 
     private void validar(Empresa emp) {
-        Empresa empresa = empresaRepository.findByCnpj(emp.getCnpj());
+        Empresa empresa = empresaRepository.findByCnpjAndSituacao(emp.getCnpj(),SituacaoEnum.CRIADO.getIndex());
         if(empresa != null){
             throw new BasicException("CNPJ ja cadastrado");
         }
@@ -68,8 +69,8 @@ public class EmpresaService {
 
     public EmpresaResponse alterar(EmpresaRequest empresaRequest, String autorization) {
         validarCampsObrigatorio(empresaRequest);
-        empresaRequest.setCnpj(empresaRequest.getCnpj().replace(".","").replace("/","").replace("-","") );
-        Empresa empresaAntiga = empresaRepository.findByCnpj(empresaRequest.getCnpj());
+        empresaRequest.setCnpj(empresaRequest.getCnpj().replaceAll("[./-]", "") );
+        Empresa empresaAntiga = empresaRepository.findByCnpjAndSituacao(empresaRequest.getCnpj(), SituacaoEnum.CRIADO.getIndex());
         if(empresaAntiga == null){
             throw new BasicException("não foi encontrado uma empresa com esse cnpj!");
         }else{
@@ -83,6 +84,25 @@ public class EmpresaService {
             empresaRepository.save(empresaNova);
             return new EmpresaMapper().toResponse(empresaNova);
         }
+
+    }
+
+    public String deletar(Long id, String autorization) {
+        Optional<Empresa> emp = empresaRepository.findById(id);
+        if(emp.isPresent()){
+            Empresa empresa = emp.get();
+            empresa.setSituacao(2);
+            empresa.setUsuarioAlteracao(getUsuario(autorization));
+            empresa.setDataAlteracao(new Date());
+            empresaRepository.save(empresa);
+            return "Removido com sucesso";
+        }else{
+            throw new BasicException("Empresa nao encontrada");
+        }
+    }
+
+    public List<EmpresaResponse> consultar() {
+        return empresaRepository.findBySituacao(SituacaoEnum.CRIADO.getIndex()).stream().map(emp -> new EmpresaMapper().toResponse(emp)).collect(Collectors.toList());
 
     }
 }
