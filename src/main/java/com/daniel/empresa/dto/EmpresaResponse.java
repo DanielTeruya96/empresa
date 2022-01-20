@@ -26,6 +26,12 @@ public class EmpresaResponse {
 
     private String usuarioAlteracao;
 
+    public EmpresaResponse(Long id, String nomeFantasia, String cnpj) {
+        this.id = id;
+        this.nomeFantasia = nomeFantasia;
+        this.cnpj = cnpj;
+    }
+
     public Long getId() {
         return id;
     }
