@@ -30,6 +30,11 @@ public class EmpresaController {
                return new ResponseEntity<>(empresaService.credenciar(empresaRequest,autorization), HttpStatus.CREATED);
     }
 
+    @PutMapping
+    public ResponseEntity<EmpresaResponse> alterarEmpresa(@RequestBody EmpresaRequest empresaRequest, @RequestHeader(value = "Authorization") String autorization){
+        return new ResponseEntity<>(empresaService.alterar(empresaRequest,autorization), HttpStatus.OK);
+    }
+
 
 
 

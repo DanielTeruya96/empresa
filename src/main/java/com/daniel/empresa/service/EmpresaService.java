@@ -65,4 +65,24 @@ public class EmpresaService {
 
 
     }
+
+    public EmpresaResponse alterar(EmpresaRequest empresaRequest, String autorization) {
+        validarCampsObrigatorio(empresaRequest);
+        empresaRequest.setCnpj(empresaRequest.getCnpj().replace(".","").replace("/","").replace("-","") );
+        Empresa empresaAntiga = empresaRepository.findByCnpj(empresaRequest.getCnpj());
+        if(empresaAntiga == null){
+            throw new BasicException("não foi encontrado uma empresa com esse cnpj!");
+        }else{
+            Empresa empresaNova = new EmpresaMapper().toEmpresa(empresaRequest);
+            empresaNova.setId(empresaAntiga.getId());
+            empresaNova.setUsuarioCriacao(empresaAntiga.getUsuarioCriacao());
+            empresaNova.setDataCriacao(empresaAntiga.getDataCriacao());
+            empresaNova.setDataAlteracao(new Date());
+            empresaNova.setUsuarioAlteracao(getUsuario(autorization));
+            empresaNova.setSituacao(empresaAntiga.getSituacao());
+            empresaRepository.save(empresaNova);
+            return new EmpresaMapper().toResponse(empresaNova);
+        }
+
+    }
 }

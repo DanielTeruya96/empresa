@@ -22,7 +22,9 @@ public class EmpresaResponse {
 
     private String usuarioCriacao;
 
-    private long situacao;
+    private Date dataAlteracao;
+
+    private String usuarioAlteracao;
 
     public Long getId() {
         return id;
@@ -80,11 +82,19 @@ public class EmpresaResponse {
         this.usuarioCriacao = usuarioCriacao;
     }
 
-    public long getSituacao() {
-        return situacao;
+    public Date getDataAlteracao() {
+        return dataAlteracao;
     }
 
-    public void setSituacao(long situacao) {
-        this.situacao = situacao;
+    public void setDataAlteracao(Date dataAlteracao) {
+        this.dataAlteracao = dataAlteracao;
+    }
+
+    public String getUsuarioAlteracao() {
+        return usuarioAlteracao;
+    }
+
+    public void setUsuarioAlteracao(String usuarioAlteracao) {
+        this.usuarioAlteracao = usuarioAlteracao;
     }
 }
