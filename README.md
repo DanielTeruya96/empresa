@@ -38,6 +38,8 @@ Para fins de auditoria é registrado o usuario que credenciou a empresa e a data
 
 Essa API exige que tenha um basic auth porém não valida essas credencias.
 
+Essa API usa utiliza o banco h2 para persistir os dados, por isso os dados são salvos apenas em tempo de execução, apos desligar a aplicação os dados não serao salvos.
+
 ##validações da API
 A API não deixa credenciar mais de uma empresa com o mesmo CNPJ, 
 o CPNJ precisa de ser informado no padrão XX.XXX.XXX/XXXX-XX
