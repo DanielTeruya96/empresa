@@ -57,14 +57,11 @@ public class EmpresaService {
 
     }
 
-    private String getUsuario(String autorization) {
+    protected String getUsuario(String autorization) {
         autorization = autorization.replace("Basic ","");
         byte[] i =  Base64.getDecoder().decode(autorization);
         String decodificado = new String(i);
         return decodificado.split(":")[0];
-
-
-
     }
 
     public EmpresaResponse alterar(EmpresaRequest empresaRequest, String autorization) {

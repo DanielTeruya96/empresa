@@ -36,6 +36,36 @@ public class EmpresaServiceTest {
     private String basicAuth = "Basic RGFuaWVsOkxlaXRl";
 
     @Test
+    public void validarSucesso(){
+        String cnpjSemFormatacao = "00000000000004";
+
+        when(empresaRepository.findByCnpjAndSituacao(cnpjSemFormatacao,SituacaoEnum.CRIADO.getIndex()))
+                .thenReturn(null);
+        empresaService.validar(criarEmpresaMock(cnpjSemFormatacao));
+        //nao pode ocorrer o Basic exception aqui
+    }
+
+
+    @Test
+    public void validarErro(){
+        String cnpjSemFormatacao = "00000000000004";
+
+        when(empresaRepository.findByCnpjAndSituacao(cnpjSemFormatacao,SituacaoEnum.CRIADO.getIndex()))
+                .thenReturn(new Empresa());
+
+        BasicException exception = assertThrows(BasicException.class, () -> empresaService.validar(criarEmpresaMock(cnpjSemFormatacao)));
+        assertEquals("CNPJ ja cadastrado", exception.getMotivo());
+    }
+
+    @Test
+    public void getUsuario(){
+        String usuario = empresaService.getUsuario(basicAuth);
+        Assertions.assertEquals("Daniel",usuario);
+    }
+
+
+
+    @Test
     public void credenciarEmpresa() {
         Empresa empresaMock = criarEmpresaMock("00000000000004");
         String cnpj = "00.000.000/0000-04";
