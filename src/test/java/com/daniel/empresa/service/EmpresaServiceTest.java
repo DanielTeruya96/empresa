@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -94,6 +96,33 @@ public class EmpresaServiceTest {
         Assertions.assertNotNull(removida.getDataAlteracao());
         Assertions.assertNotNull(removida.getUsuarioAlteracao());
         Assertions.assertEquals(removida.getSituacao(),SituacaoEnum.APAGADO.getIndex());
+    }
+
+    @Test
+    public void consultarEmpresa(){
+        List<Empresa> empresas = mockListaEmpresa();
+
+        when(empresaRepository.findBySituacao(SituacaoEnum.CRIADO.getIndex()))
+                .thenReturn(empresas);
+
+        List<EmpresaResponse> empresaResponses = empresaService.consultar();
+        Assertions.assertEquals(empresaResponses.size(),empresas.size());
+        empresaResponses.forEach(emp -> {
+            Assertions.assertTrue(emp.getCnpj().matches("^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$"));
+        });
+
+
+    }
+
+    private List<Empresa> mockListaEmpresa() {
+
+        List<Empresa> empresas = new ArrayList<>();
+        empresas.add(criarEmpresaMock("00000000000001"));
+        empresas.add(criarEmpresaMock("00000000000002"));
+        empresas.add(criarEmpresaMock("00000000000003"));
+        empresas.add(criarEmpresaMock("00000000000004"));
+        return empresas;
+
     }
 
 
