@@ -29,7 +29,7 @@ Documentação dos endpoints estão em:
 http://localhost:8080//swagger-ui.html#/
 
 
-#Sobre a API
+# Sobre a API
 Crud simples de uma empresa. 
 
 uma empresa tem nome fantasia,cnpj, razão social e o nome do proprietario.
@@ -40,12 +40,12 @@ Essa API exige que tenha um basic auth porém não valida essas credencias.
 
 Essa API usa utiliza o banco h2 para persistir os dados, por isso os dados são salvos apenas em tempo de execução, apos desligar a aplicação os dados não serao salvos.
 
-##validações da API
+## validações da API
 A API não deixa credenciar mais de uma empresa com o mesmo CNPJ, 
 o CPNJ precisa de ser informado no padrão XX.XXX.XXX/XXXX-XX
 
 
-###Dicionario de dados da API 
+### Dicionario de dados da API 
 
 id: identificador único da empresa
 
@@ -68,7 +68,7 @@ data_alteracao: Data em que foi efetivada a alteracao
 situacao: Exclusão lógica do registro (1 - criado, visivel para o consumidor da API, 2- apagado, não visicel para o consumidor da API)
 
 
-###Adicional
+### Adicional
 Dentro da pasta Postman collection, no arquivo Basico Empresa.postman_collection.json esta uma collectiondo postman para testar a pi
 
 e dentro da pasta Teste integracao esta uma collection para realizar o teste integrado, e com as variaveis de ambiente
