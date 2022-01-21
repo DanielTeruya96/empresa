@@ -2,10 +2,7 @@ package com.daniel.empresa.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 import java.util.Date;
 
 public class EmpresaResponse {
@@ -25,7 +22,7 @@ public class EmpresaResponse {
     @ApiModelProperty(value = "Nome do proprietario(a) da empresa", example = "Cida")
     private String nomeProprietario;
 
-    @ApiModelProperty(value = "Data de criação do registro", example = "")
+    @ApiModelProperty(value = "Data de criação do registro")
     private Date dataCriacao;
 
     @ApiModelProperty(value = "Usuario que criou o registro", example = "Daniel")
