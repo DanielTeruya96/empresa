@@ -68,7 +68,7 @@ data_alteracao: Data em que foi efetivada a alteracao
 situacao: Exclusão lógica do registro (1 - criado, visivel para o consumidor da API, 2- apagado, não visicel para o consumidor da API)
 
 
-####Adicional
+###Adicional
 Dentro da pasta Postman collection, no arquivo Basico Empresa.postman_collection.json esta uma collectiondo postman para testar a pi
 
 e dentro da pasta Teste integracao esta uma collection para realizar o teste integrado, e com as variaveis de ambiente
