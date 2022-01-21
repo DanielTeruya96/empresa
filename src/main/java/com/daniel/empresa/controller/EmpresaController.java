@@ -4,6 +4,8 @@ package com.daniel.empresa.controller;
 import com.daniel.empresa.dto.EmpresaRequest;
 import com.daniel.empresa.dto.EmpresaResponse;
 import com.daniel.empresa.service.EmpresaService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +17,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/empresa")
+@Api(tags = "Empresa")
 public class EmpresaController {
 
     @Autowired
     private EmpresaService empresaService;
 
     @GetMapping()
+    @ApiOperation(value = "Consulta todas empresas")
     public ResponseEntity<List<EmpresaResponse>> consultarEmpresa(){
         return new ResponseEntity<>(empresaService.consultar(),HttpStatus.OK);
     }
