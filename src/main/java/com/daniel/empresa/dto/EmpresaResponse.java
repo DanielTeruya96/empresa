@@ -26,6 +26,9 @@ public class EmpresaResponse {
 
     private String usuarioAlteracao;
 
+    public EmpresaResponse() {
+    }
+
     public EmpresaResponse(Long id, String nomeFantasia, String cnpj) {
         this.id = id;
         this.nomeFantasia = nomeFantasia;

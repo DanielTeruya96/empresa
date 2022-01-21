@@ -2,7 +2,9 @@ package com.daniel.empresa.controller;
 
 import com.daniel.empresa.dto.EmpresaRequest;
 import com.daniel.empresa.dto.EmpresaResponse;
+import com.daniel.empresa.model.Empresa;
 import com.daniel.empresa.service.EmpresaService;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,7 +68,7 @@ public class EmpresaControllerTest {
     @Test
     public void deletarEmpresa(){
 
-        when(this.empresaService.deletar(1L,basicAuth)).thenReturn(basicAuth);
+        when(this.empresaService.deletar(1L,basicAuth)).thenReturn("ok");
 
         ResponseEntity<String> response = empresaController.deletar(1L,basicAuth);
 

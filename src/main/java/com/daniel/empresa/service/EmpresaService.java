@@ -23,20 +23,19 @@ public class EmpresaService {
     private EmpresaRepository empresaRepository;
 
 
-
-
-
     public EmpresaResponse credenciar(EmpresaRequest empresaRequest, String autorization) {
         validarCampsObrigatorio(empresaRequest);
         empresaRequest.setCnpj(empresaRequest.getCnpj().replaceAll("[./-]", "") );
         Empresa emp = new EmpresaMapper().toEmpresa(empresaRequest);
         validar(emp);
-        emp.setUsuarioCriacao(getUsuario(autorization));
-        emp.setDataCriacao(new Date());
+        setCriacao(autorization, emp);
         emp = empresaRepository.save(emp);
         return  new EmpresaMapper().toResponse(emp);
+    }
 
-
+    private void setCriacao(String autorization, Empresa emp) {
+        emp.setUsuarioCriacao(getUsuario(autorization));
+        emp.setDataCriacao(new Date());
     }
 
     private void validarCampsObrigatorio(EmpresaRequest empresaRequest) {
@@ -50,7 +49,7 @@ public class EmpresaService {
         }
     }
 
-    private void validar(Empresa emp) {
+    public void validar(Empresa emp) {
         Empresa empresa = empresaRepository.findByCnpjAndSituacao(emp.getCnpj(),SituacaoEnum.CRIADO.getIndex());
         if(empresa != null){
             throw new BasicException("CNPJ ja cadastrado");
@@ -91,15 +90,19 @@ public class EmpresaService {
     public String deletar(Long id, String autorization) {
         Optional<Empresa> emp = empresaRepository.findById(id);
         if(emp.isPresent()){
-            Empresa empresa = emp.get();
-            empresa.setSituacao(2);
-            empresa.setUsuarioAlteracao(getUsuario(autorization));
-            empresa.setDataAlteracao(new Date());
-            empresaRepository.save(empresa);
+            remover(autorization, emp.get());
             return "Removido com sucesso";
         }else{
             throw new BasicException("Empresa nao encontrada");
         }
+    }
+
+    protected Empresa remover(String autorization, Empresa empresa) {
+        empresa.setSituacao(2);
+        empresa.setUsuarioAlteracao(getUsuario(autorization));
+        empresa.setDataAlteracao(new Date());
+       return empresaRepository.save(empresa);
+
     }
 
     public List<EmpresaResponse> consultar() {

@@ -21,6 +21,8 @@ public class EmpresaRequest {
     private String nomeProprietario;
 
 
+
+
     public EmpresaRequest(String nomeFantasia, String cnpj) {
         this.nomeFantasia = nomeFantasia;
         this.cnpj = cnpj;
