@@ -10,20 +10,19 @@ Sistema para cadastro de empresa
 - [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Maven](https://maven.apache.org)
 
-# Como executar o Projeto
-Um projeto maven e necessário que execute o comando na raiz do projeto.
-Com isso ele irá baixar as dependências do projeto.
+# Como executar a Aplicação
+Dentro da pasta /empresa execute o seguitne comando para instalar as dependencias
 
 ```sh
  $ mvn clean install
 ```
-Depois de instaladas as dependências. É necessário acessar a pasta target dentro do projeto e  
-e executar o comando.
+Depois de instaladas as dependências. Entre na pasta target e execute a aplicação com o seguinte comando
 
 ```sh
  $ java -jar empresa-0.0.1-SNAPSHOT.jar
 ```
-Com isso o projeto irá inicializar na porta 8080.
+
+após executar o comando a aplicação estará rodando na porta 8080
 
 # Swagger
 Documentação dos endpoints estão em:
