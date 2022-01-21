@@ -28,29 +28,19 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
-//                .useDefaultResponseMessages(false)
+                .useDefaultResponseMessages(false)
 //                .globalResponseMessage(RequestMethod.GET,responseMessageForGET())
                 .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("OS serive REST API")
-                .description("Documentação da API do OS service")
+                .title("Cadastro basico de empresa ")
+                .description("Documentação da API de cadastro basico")
                 .version("1.0.0")
                 .license("Apache License Version 2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
                 .build();
-    }
-
-    private List<ResponseMessage> responseMessageForGET()
-    {
-        return new ArrayList<ResponseMessage>() {{
-            add(new ResponseMessageBuilder()
-                    .code(403)
-                    .message("Token não encontrado!")
-                    .build());
-        }};
     }
 
 }
