@@ -1,0 +1,240 @@
+{
+	"info": {
+		"_postman_id": "2ba2dba5-dc17-4897-8f74-f6c8354550c9",
+		"name": "Teste Integração",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cria altera remove",
+			"item": [
+				{
+					"name": "1 - Credenciar Empresa",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contem Id\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"CNPJ\",jsonData.cnpj);\r",
+									"pm.collectionVariables.set(\"id\",jsonData.id);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "Teste",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "Teste",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cnpj\": \"00.000.000/0000-03\",\r\n  \"nomeFantasia\": \"Lachonete do tia\",\r\n  \"nomeProprietario\": \"Cida\",\r\n  \"razaoSocial\": \"Restaurante\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/empresa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"empresa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2 -Alterar empresa",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"razaoSocial\",\"restauranteX\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Razao social foi alterada\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.razaoSocial)\r",
+									"      .to.eql(pm.collectionVariables.get(\"razaoSocial\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{senha}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{usuario}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cnpj\": \"{{CNPJ}}\",\r\n  \"nomeFantasia\": \"Lachonete do tia\",\r\n  \"nomeProprietario\": \"Cida\",\r\n  \"razaoSocial\": \"{{razaoSocial}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/empresa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"empresa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - apagar empresa",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{senha}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{usuario}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/empresa?id={{id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"empresa"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4 -consultar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ainda existe o ID?\", function () {\r",
+									"\r",
+									"    var s = \"id\\\":\"+pm.collectionVariables.get(\"id\");\r",
+									"    pm.expect(pm.response.text()).to.not.include(s);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/empresa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"empresa"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "CNPJ",
+			"value": ""
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "razaoSocial",
+			"value": ""
+		}
+	]
+}
