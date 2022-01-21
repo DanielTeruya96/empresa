@@ -31,9 +31,7 @@ public class EmpresaServiceTest {
     @Mock
     private EmpresaRepository empresaRepository;
 
-
-
-    private String basicAuth = "Basic RGFuaWVsOkxlaXRl";
+    private final String basicAuth = "Basic RGFuaWVsOkxlaXRl";
 
     @Test
     public void validarSucesso(){
@@ -107,6 +105,21 @@ public class EmpresaServiceTest {
         Assertions.assertNotNull(response.getUsuarioAlteracao());
     }
 
+    @Test
+    public void alterarEmpresaQuandoNaoExisteCnpj(){
+        String cnpj = "00.000.000/0000-04";
+        String cnpjSemFormatacao = "00000000000004";
+        EmpresaRequest request = new EmpresaRequest("BRQ", cnpj);
+
+        when(empresaRepository.findByCnpjAndSituacao(cnpjSemFormatacao,SituacaoEnum.CRIADO.getIndex()))
+                .thenReturn(null);
+
+        BasicException exception = Assertions.assertThrows(BasicException.class,
+                () -> empresaService.alterar(request,basicAuth));
+
+        assertEquals(exception.getMotivo(),"não foi encontrado uma empresa com esse cnpj!");
+    }
+
 
     @Test
     public void deletarEmpresa(){
@@ -142,9 +155,7 @@ public class EmpresaServiceTest {
 
         List<EmpresaResponse> empresaResponses = empresaService.consultar();
         assertEquals(empresaResponses.size(),empresas.size());
-        empresaResponses.forEach(emp -> {
-            Assertions.assertTrue(emp.getCnpj().matches("^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$"));
-        });
+        empresaResponses.forEach(emp -> Assertions.assertTrue(emp.getCnpj().matches("^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$")));
 
 
     }
@@ -156,6 +167,8 @@ public class EmpresaServiceTest {
         assertEquals("cnpj informar cnpj com o formato XX.XXX.XXX/XXXX-XX", exception.getMotivo());
     }
 
+
+
     private List<Empresa> mockListaEmpresa() {
 
         List<Empresa> empresas = new ArrayList<>();
@@ -166,10 +179,6 @@ public class EmpresaServiceTest {
         return empresas;
 
     }
-
-
-
-
 
     private Empresa criarEmpresaMock(String cnpj) {
         Empresa empresa = new Empresa();

@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class EmpresaRequest {
 
-    @ApiModelProperty(value = "Nome fantasia", example = "Lachonete do tia")
+    @ApiModelProperty(value = "Nome fantasia", example = "Lachonete da tia")
     private String nomeFantasia;
 
     @ApiModelProperty(value = "Cnpj da empresa", example = "00.000.000/0000-01", required = true)
