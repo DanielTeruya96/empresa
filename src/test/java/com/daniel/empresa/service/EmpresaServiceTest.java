@@ -2,6 +2,7 @@ package com.daniel.empresa.service;
 
 import com.daniel.empresa.dto.EmpresaRequest;
 import com.daniel.empresa.dto.EmpresaResponse;
+import com.daniel.empresa.exception.BasicException;
 import com.daniel.empresa.model.Empresa;
 import com.daniel.empresa.model.SituacaoEnum;
 import com.daniel.empresa.repository.EmpresaRepository;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -27,6 +30,8 @@ public class EmpresaServiceTest {
 
     @Mock
     private EmpresaRepository empresaRepository;
+
+
 
     private String basicAuth = "Basic RGFuaWVsOkxlaXRl";
 
@@ -46,7 +51,7 @@ public class EmpresaServiceTest {
 
         EmpresaResponse response = empresaService.credenciar(request, basicAuth);
 
-        Assertions.assertEquals(response.getCnpj(), cnpj);
+        assertEquals(response.getCnpj(), cnpj);
         Assertions.assertNotNull(response.getUsuarioCriacao());
         Assertions.assertNotNull(response.getDataCriacao());
     }
@@ -80,7 +85,7 @@ public class EmpresaServiceTest {
 
         String a = empresaService.deletar(1L,basicAuth);
 
-        Assertions.assertEquals(a,"Removido com sucesso");
+        assertEquals(a,"Removido com sucesso");
     }
 
     @Test
@@ -95,7 +100,7 @@ public class EmpresaServiceTest {
         Empresa removida = empresaService.remover(basicAuth,empresa);
         Assertions.assertNotNull(removida.getDataAlteracao());
         Assertions.assertNotNull(removida.getUsuarioAlteracao());
-        Assertions.assertEquals(removida.getSituacao(),SituacaoEnum.APAGADO.getIndex());
+        assertEquals(removida.getSituacao(),SituacaoEnum.APAGADO.getIndex());
     }
 
     @Test
@@ -106,12 +111,19 @@ public class EmpresaServiceTest {
                 .thenReturn(empresas);
 
         List<EmpresaResponse> empresaResponses = empresaService.consultar();
-        Assertions.assertEquals(empresaResponses.size(),empresas.size());
+        assertEquals(empresaResponses.size(),empresas.size());
         empresaResponses.forEach(emp -> {
             Assertions.assertTrue(emp.getCnpj().matches("^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$"));
         });
 
 
+    }
+
+    @Test
+    void camposInvalido() {
+        EmpresaRequest empresaRequest = new EmpresaRequest("aa","00");
+        BasicException exception = assertThrows(BasicException.class, () -> empresaService.validarCampsObrigatorio(empresaRequest));
+        assertEquals("cnpj informar cnpj com o formato XX.XXX.XXX/XXXX-XX", exception.getMotivo());
     }
 
     private List<Empresa> mockListaEmpresa() {

@@ -38,7 +38,7 @@ public class EmpresaService {
         emp.setDataCriacao(new Date());
     }
 
-    private void validarCampsObrigatorio(EmpresaRequest empresaRequest) {
+    protected void validarCampsObrigatorio(EmpresaRequest empresaRequest) {
         if(empresaRequest.getCnpj()==null || empresaRequest.getCnpj().isEmpty()){
             throw new BasicException("cnpj é obrigatorio!");
         }
