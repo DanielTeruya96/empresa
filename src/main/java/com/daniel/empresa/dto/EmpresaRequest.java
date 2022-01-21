@@ -1,5 +1,7 @@
 package com.daniel.empresa.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,18 +12,17 @@ import java.util.Date;
 
 public class EmpresaRequest {
 
-
+    @ApiModelProperty(value = "Nome fantasia", example = "Lachonete do tia")
     private String nomeFantasia;
 
-
+    @ApiModelProperty(value = "Cnpj da empresa", example = "00.000.000/0000-01", required = true)
     private String cnpj;
 
+    @ApiModelProperty(value = "Razao social", example = "Restaurante")
     private String razaoSocial;
 
+    @ApiModelProperty(value = "Nome do proprietario(a) da empresa", example = "Cida")
     private String nomeProprietario;
-
-
-
 
     public EmpresaRequest(String nomeFantasia, String cnpj) {
         this.nomeFantasia = nomeFantasia;
