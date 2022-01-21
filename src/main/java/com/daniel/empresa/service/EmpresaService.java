@@ -25,7 +25,6 @@ public class EmpresaService {
 
     public EmpresaResponse credenciar(EmpresaRequest empresaRequest, String autorization) {
         validarCampsObrigatorio(empresaRequest);
-        empresaRequest.setCnpj(empresaRequest.getCnpj().replaceAll("[./-]", "") );
         Empresa emp = new EmpresaMapper().toEmpresa(empresaRequest);
         validar(emp);
         setCriacao(autorization, emp);
@@ -47,6 +46,7 @@ public class EmpresaService {
         if(!cnpj.matches("^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$")){
             throw new BasicException("cnpj informar cnpj com o formato XX.XXX.XXX/XXXX-XX");
         }
+        empresaRequest.setCnpj(empresaRequest.getCnpj().replaceAll("[./-]", "") );
     }
 
     public void validar(Empresa emp) {
@@ -66,7 +66,6 @@ public class EmpresaService {
 
     public EmpresaResponse alterar(EmpresaRequest empresaRequest, String autorization) {
         validarCampsObrigatorio(empresaRequest);
-        empresaRequest.setCnpj(empresaRequest.getCnpj().replaceAll("[./-]", "") );
         Empresa empresaAntiga = empresaRepository.findByCnpjAndSituacao(empresaRequest.getCnpj(), SituacaoEnum.CRIADO.getIndex());
         if(empresaAntiga == null){
             throw new BasicException("não foi encontrado uma empresa com esse cnpj!");

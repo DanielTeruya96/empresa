@@ -37,8 +37,7 @@ public class EmpresaServiceTest {
     public void validarSucesso(){
         String cnpjSemFormatacao = "00000000000004";
 
-        when(empresaRepository.findByCnpjAndSituacao(cnpjSemFormatacao,SituacaoEnum.CRIADO.getIndex()))
-                .thenReturn(null);
+        naoEncontrarEmpresa(cnpjSemFormatacao);
         empresaService.validar(criarEmpresaMock(cnpjSemFormatacao));
         //nao pode ocorrer o Basic exception aqui
     }
@@ -70,11 +69,9 @@ public class EmpresaServiceTest {
         EmpresaRequest request = new EmpresaRequest("BRQ", cnpj);
 
 
-        when(empresaRepository.findByCnpjAndSituacao(empresaMock.getCnpj(), SituacaoEnum.CRIADO.getIndex()))
-                .thenReturn(null);
+        naoEncontrarEmpresa(empresaMock.getCnpj());
 
-        when(empresaRepository.save(Mockito.any(Empresa.class)))
-                .thenAnswer(i -> i.getArguments()[0]);
+        mockSaveEmpresa();
 
 
         EmpresaResponse response = empresaService.credenciar(request, basicAuth);
@@ -82,6 +79,11 @@ public class EmpresaServiceTest {
         assertEquals(response.getCnpj(), cnpj);
         Assertions.assertNotNull(response.getUsuarioCriacao());
         Assertions.assertNotNull(response.getDataCriacao());
+    }
+
+    private void mockSaveEmpresa() {
+        when(empresaRepository.save(Mockito.any(Empresa.class)))
+                .thenAnswer(i -> i.getArguments()[0]);
     }
 
     @Test
@@ -96,8 +98,7 @@ public class EmpresaServiceTest {
         when(empresaRepository.findByCnpjAndSituacao(cnpjSemFormatacao,SituacaoEnum.CRIADO.getIndex()))
                 .thenReturn(empresaMock);
 
-        when(empresaRepository.save(Mockito.any(Empresa.class)))
-                .thenAnswer(i -> i.getArguments()[0]);
+        mockSaveEmpresa();
 
         EmpresaResponse response = empresaService.alterar(request, basicAuth);
 
@@ -111,13 +112,17 @@ public class EmpresaServiceTest {
         String cnpjSemFormatacao = "00000000000004";
         EmpresaRequest request = new EmpresaRequest("BRQ", cnpj);
 
-        when(empresaRepository.findByCnpjAndSituacao(cnpjSemFormatacao,SituacaoEnum.CRIADO.getIndex()))
-                .thenReturn(null);
+        naoEncontrarEmpresa(cnpjSemFormatacao);
 
         BasicException exception = Assertions.assertThrows(BasicException.class,
                 () -> empresaService.alterar(request,basicAuth));
 
         assertEquals(exception.getMotivo(),"não foi encontrado uma empresa com esse cnpj!");
+    }
+
+    private void naoEncontrarEmpresa(String cnpjSemFormatacao) {
+        when(empresaRepository.findByCnpjAndSituacao(cnpjSemFormatacao,SituacaoEnum.CRIADO.getIndex()))
+                .thenReturn(null);
     }
 
 
@@ -136,8 +141,7 @@ public class EmpresaServiceTest {
 
         Empresa empresa = criarEmpresaMock("00000000000004");
 
-        when(empresaRepository.save(Mockito.any(Empresa.class)))
-                .thenAnswer(i -> i.getArguments()[0]);
+        mockSaveEmpresa();
 
 
         Empresa removida = empresaService.remover(basicAuth,empresa);
