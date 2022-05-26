@@ -1,6 +1,8 @@
 # Cadastro basico de empresa
 Sistema para cadastro de empresa
 
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Empresa&uri=https%3A%2F%2Fgithub.com%2FDanielTeruya96%2Fempresa%2Fblob%2Fmaster%2FPostman%2520collection%2FInsomnia_2022-05-25.json)
+
 # Tecnologias utilizadas
 - Springboot
 - H2
